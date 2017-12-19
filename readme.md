@@ -43,10 +43,10 @@ There is a 2 step process in deploying a function:
  * afterwards we will use Terraform to deploy the code bundle and to create / update any infrastructure artefacts
  that we have configured.
 
-For convenience, we have provided a build script (`build.sh`) which will prepare the code bundle in the output folder.
+For convenience, we have provided a build script (`build-lambda`) which will prepare the code bundle in the output folder.
 The script must be run from that path in order for it to work. The workflow then would look like this:
  
- * in the project folder, build your function using `./build.sh <your-function-name>`
+ * build your function using `build-lambda <your-function-name>`
  * from within the function folder (`cd <your-function-name>`) run terraform:
     - `terraform init`
     - `terraform plan`; review the proposed plan
