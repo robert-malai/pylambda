@@ -7,8 +7,8 @@ In order to enable the feature on a container, define the following configured t
   - START_TAG (start-stop:start) with a valid cron expression (5 or 6 columns)
   - STOP_TAG (start-stop:stop) with a valid cron expression
 
-The cron expressions should depict scheduled uptime and downtimes greater than MIN_UPTIME (30 minutes) and
-MIN_DOWNTIME (30 minutes)
+The cron expressions should depict scheduled uptime and downtimes greater than MIN_UPTIME (60 minutes) and
+MIN_DOWNTIME (60 minutes)
 """
 
 import logging
@@ -50,7 +50,6 @@ def get_instance_params(instance: ec2.Instance, now: datetime):
     try:
         start_tag = next(tag['Value'] for tag in instance.tags if tag['Key'] == START_TAG)
         stop_tag = next(tag['Value'] for tag in instance.tags if tag['Key'] == STOP_TAG)
-        environment_tag = next((tag['Value'] for tag in instance.tags if tag['Key'] == ENVIRONMENT_TAG), None)
         enable_tag = next((tag['Value'].lower() for tag in instance.tags if tag['Key'] == ENABLE_TAG), "enabled")
     except StopIteration:
         raise ValueError(f"Problem reading the tag values on instance {instance.id}")
@@ -70,14 +69,8 @@ def get_instance_params(instance: ec2.Instance, now: datetime):
             except (CroniterBadDateError, CroniterBadCronError, TypeError) as e:
                 raise ValueError(f"Bad cron expression: {e}")
             else:
-                if environment_tag and environment_tag.lower() in ['prod', 'production']:
-                    raise ValueError("Production instances shouldn't be started / stopped automatically")
                 if not stop_tag and not stop_tag:
                     raise ValueError("Bad cron expression: you have to provide at least one expression")
-                if start_tag and int(start_tag.split()[0]) % 10 != 0:
-                    raise ValueError("Bad cron expression: start schedule must be multiple of 10 minutes")
-                if stop_tag and int(stop_tag.split()[0]) % 10 != 0:
-                    raise ValueError("Bad cron expression: stop schedule must be multiple of 10 minutes")
 
                 if start_tag and stop_tag:
                     # In this case we can validate the scheduled uptime and downtime of the instance
