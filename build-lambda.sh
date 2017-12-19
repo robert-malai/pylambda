@@ -9,7 +9,7 @@ fi
 
 FUNCTION_NAME=${1%}
 if [ ! -d "/workspace/$1" ]; then
-    echo "Nu such function."
+    echo "No such function."
     exit 1
 fi
 
@@ -17,12 +17,12 @@ VIRTUAL_ENVIRONMENT=/workspace/${FUNCTION_NAME}/.venv
 # Enable virtual environment
 if [ ! -d "$VIRTUAL_ENVIRONMENT" ]
 then
-    echo "Setting up virtual environment"
+    echo "Setting up virtual environment..."
     python3 -m venv ${VIRTUAL_ENVIRONMENT}
     source ${VIRTUAL_ENVIRONMENT}/bin/activate
     # The following dependencies are satisfied by AWS already, we keep them here
     # in order to support our development
-    pip install boto3
+    pip install boto3 > /dev/null
 else
     source ${VIRTUAL_ENVIRONMENT}/bin/activate
 fi
@@ -37,4 +37,9 @@ mkdir -p /workspace/${FUNCTION_NAME}/out && \
     zip -r9 /workspace/${FUNCTION_NAME}/out/${FUNCTION_NAME}.zip * > /dev/null 2>&1 && \
     cd /workspace/${FUNCTION_NAME} > /dev/null && \
     zip -9 /workspace/${FUNCTION_NAME}/out/${FUNCTION_NAME}.zip *.py > /dev/null 2>&1 && \
-    cd - > /dev/null && rm -R /tmp/${FUNCTION_NAME}
+    cd - > /dev/null
+
+echo "Clean up..."
+deactivate
+rm -R /tmp/${FUNCTION_NAME}
+rm -R ${VIRTUAL_ENVIRONMENT}
