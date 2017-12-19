@@ -28,7 +28,7 @@ dependencies (`requirements.txt`).
 
 Whenever there are modifications to be done to the infrastructure, Terraform wil capture the current state, and will 
 record any updates it makes, so that one can destroy the artifacts created. In order to be visible from everywhere, the
-state is persisted on S3, in `-terraform` bucket. In order to synchronize the update of the infrastructure,
+state is persisted on S3, in `<! YOUR ACCOUNT ID !>-terraform` bucket. In order to synchronize the update of the infrastructure,
 a DynamoDb table is used `terraform_locks`. Both of this objects must exist before running terraform. We've provided
 a utility script to create them, idempotent in it's operation: `aws-init-terraform.sh`.
 
