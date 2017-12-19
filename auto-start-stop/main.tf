@@ -4,7 +4,7 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket = "/516142625866-terraform-state"
+    bucket = "/<! YOUR ACCOUNT ID !>-terraform-state"
     key = "aws-lambda/auto-start-stop.tfstate"
     dynamodb_table = "terraform_locks"
     region = "us-east-1"
@@ -29,7 +29,7 @@ data "aws_iam_policy_document" "auto_start_stop" {
     ]
 
     resources = [
-      "arn:aws:ec2:*:531705399537:*"
+      "arn:aws:ec2:*:<! YOUR ACCOUNT ID !>:*"
     ]
   }
 }

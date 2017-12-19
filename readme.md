@@ -1,11 +1,8 @@
-#  AWS Lambda Collection
+#  Pylambda
 
-This is the collection of lambda functions for  infrastructure. The functions runtime environment is 
-Python 3.6 and each function will contain the infrastructure provisioning scripts in [Terraform](https://www.terraform.io/) 
-format. It is designed so that each function will be treated as a complete bundle, function code and 
-infrastructure elements. 
-
-Each function can be deployed independently to others, with it's infrastructure elements.
+This is an example workflow for the development of lambda functions, using Python 3.6. It contains an infrastructure oriented
+lambda function in order to exemplify the whole workflow. It uses [Terraform](https://www.terraform.io/) in order to 
+operate on the infrastructure.
 
 ## Design
 
