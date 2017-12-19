@@ -9,8 +9,8 @@ operate on the infrastructure.
 The functions will use AWS Python SDK (boto3) to interact with AWS resources. Besides it's clear goal, each function
 faces a set of common patterns:
 
- - extract parameters from the instance tags; here we also treat the parameters for validity and raise any exceptions;
- general rule is that we continue with the next instance in case of exception.
+ - extract parameters from the execution context / target (in our case, instance tags); here we also treat the parameters
+  for validity and raise any exceptions;
  - perform function task based on the parameters.
  
 In order to have a complete functional package, we need to define the individual infrastructure elements that the current
@@ -40,7 +40,7 @@ common - the lock keys created here are based on the hash of the state.
 There is a 2 step process in deploying a function:
  
  * first we must bundle the function code into a zip package which contains the main code and it's dependencies;
- * afterwards we will use Terraform to deploy the code bundle and to create / update any infrastructure artefacts
+ * afterwards we will use Terraform to deploy the code bundle and to create / update any infrastructure artifacts
  that we have configured.
 
 For convenience, we have provided a build script (`build-lambda`) which will prepare the code bundle in the output folder.
